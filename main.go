@@ -7,13 +7,20 @@ import (
 
 func main() {
 
-	var handler http.HandlerFunc = func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello")
-	}
+
+	})
+
+	mux.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "world")
+	})
 
 	server := http.Server{
 		Addr:    "localhost:8080",
-		Handler: handler,
+		Handler: mux,
 	}
 
 	err := server.ListenAndServe()
